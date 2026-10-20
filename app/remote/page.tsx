@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/Button";
+import { SiteFooter } from "@/components/SiteFooter";
 import { useRemotePublisher } from "@/hooks/useRemoteControl";
 import { FONT_SIZE_STEP, SPEED_STEP } from "@/lib/defaults";
 
@@ -16,7 +17,7 @@ export default function RemotePage() {
   const { publish } = useRemotePublisher();
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col gap-6 px-4 py-8">
+    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col gap-6 px-4 py-8 pb-0">
       <header>
         <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
           Remote control
@@ -103,6 +104,10 @@ export default function RemotePage() {
       >
         Back to editor
       </Link>
+
+      <div className="-mx-4 mt-auto">
+        <SiteFooter />
+      </div>
     </main>
   );
 }

@@ -7,6 +7,7 @@ import { ScriptEditor } from "@/components/ScriptEditor";
 import { ScriptLibrary } from "@/components/ScriptLibrary";
 import { SettingsPanel } from "@/components/SettingsPanel";
 import { SidePanel } from "@/components/SidePanel";
+import { SiteFooter } from "@/components/SiteFooter";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import {
   DEFAULT_SCRIPT,
@@ -172,6 +173,8 @@ export default function EditorPage() {
           />
         </div>
       </div>
+
+      <SiteFooter />
 
       {/* Mobile sticky start */}
       <div className="sticky bottom-0 z-30 border-t border-border/80 bg-surface/90 p-3 backdrop-blur-md lg:hidden">

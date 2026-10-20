@@ -2,6 +2,17 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "teleprompter",
   "compatibility_date": "2026-10-20",
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "teleprompter.sagardash.me",
+      "custom_domain": true
+    },
+    {
+      "pattern": "teleprompter.subarna.me",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     // Next.js `output: "export"` writes here (`trailingSlash: true`)
     "directory": "./out",

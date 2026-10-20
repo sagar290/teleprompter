@@ -101,12 +101,15 @@ Open [http://localhost:3000](http://localhost:3000).
 The app is a **static export** (fully client-side / localStorage), served as Workers static assets.
 
 ```bash
-# One-time: authenticate
-npx wrangler login
+# Put your Cloudflare API token in `.env` as CLOUDFLARE_API_TOKEN
+# (or run: npx wrangler login)
 
-# Build + deploy
+# Build + deploy (includes custom domain teleprompter.subarna.me)
 npm run deploy
 ```
+
+Custom domain is configured in `wrangler.jsonc` → `teleprompter.subarna.me`.  
+`subarna.me` must already be on the same Cloudflare account.
 
 Preview in the Workers runtime locally:
 
