@@ -9,6 +9,9 @@ interface ScriptEditorProps {
   value: string;
   onChange: (value: string) => void;
   onClear: () => void;
+  onSave?: () => void;
+  /** True when editing an existing saved script — button shows Update. */
+  isUpdating?: boolean;
 }
 
 type InsertPreset = {
@@ -109,7 +112,13 @@ function Chip({
   );
 }
 
-export function ScriptEditor({ value, onChange, onClear }: ScriptEditorProps) {
+export function ScriptEditor({
+  value,
+  onChange,
+  onClear,
+  onSave,
+  isUpdating = false,
+}: ScriptEditorProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const pauseInputRef = useRef<HTMLInputElement>(null);
   const [pauseOpen, setPauseOpen] = useState(false);
@@ -184,15 +193,28 @@ export function ScriptEditor({ value, onChange, onClear }: ScriptEditorProps) {
         <h2 className="text-sm font-medium uppercase tracking-[0.14em] text-ink-muted">
           Script
         </h2>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onClear}
-          aria-label="Clear script"
-          disabled={!value}
-        >
-          Clear
-        </Button>
+        <div className="flex items-center gap-1.5">
+          {onSave ? (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={onSave}
+              aria-label={isUpdating ? "Update script" : "Save script"}
+              disabled={!value.trim()}
+            >
+              {isUpdating ? "Update" : "Save"}
+            </Button>
+          ) : null}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClear}
+            aria-label="Clear script"
+            disabled={!value}
+          >
+            Clear
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-2.5">
@@ -273,7 +295,7 @@ export function ScriptEditor({ value, onChange, onClear }: ScriptEditorProps) {
         onChange={(e) => onChange(e.target.value)}
         placeholder="Write or paste your script…"
         spellCheck
-        className="h-[420px] resize-none overflow-y-auto rounded-xl border border-border bg-surface px-4 py-3 text-base leading-relaxed text-ink placeholder:text-ink-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:h-[520px]"
+        className="h-[min(58vh,560px)] resize-none overflow-y-auto rounded-xl border border-border bg-surface px-4 py-3 text-base leading-relaxed text-ink placeholder:text-ink-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:h-[calc(100dvh-16rem)]"
         aria-label="Script editor"
       />
 

@@ -42,7 +42,11 @@ export default function PrompterPage() {
   const [countdownActive, setCountdownActive] = useState(false);
 
   const idle = useIdle(3000);
-  const { isFullscreen, toggle: toggleFullscreen } = useFullscreen(rootRef);
+  const {
+    isFullscreen,
+    exit: exitFullscreen,
+    toggle: toggleFullscreen,
+  } = useFullscreen(rootRef);
 
   const parsed = useMemo(() => parseScript(script), [script]);
 
@@ -224,6 +228,30 @@ export default function PrompterPage() {
         }
         onGuideHeightChange={(guideHeight) => patchSettings({ guideHeight })}
       />
+
+      {isFullscreen ? (
+        <button
+          type="button"
+          onClick={() => {
+            void exitFullscreen();
+          }}
+          aria-label="Exit fullscreen"
+          className="absolute right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/70 text-white shadow-float backdrop-blur-md transition-colors hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            aria-hidden="true"
+          >
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+      ) : null}
 
       <ControlsBar
         visible={showControls}

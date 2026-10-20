@@ -10,9 +10,14 @@
 # next.js
 /.next/
 /out/
+.open-next
 
 # production
 /build
+
+# cloudflare / wrangler
+.wrangler/
+.dev.vars
 
 # misc
 .DS_Store
@@ -25,6 +30,7 @@ yarn-error.log*
 
 # env files
 .env*.local
+.env
 
 # typescript
 *.tsbuildinfo

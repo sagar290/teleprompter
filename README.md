@@ -96,6 +96,28 @@ Open [http://localhost:3000](http://localhost:3000).
 - **BroadcastChannel** (implemented): open `/prompter` and `/remote` in tabs on the same origin/browser. Instant, no server.
 - **Cross-device**: use a small WebSocket relay (or WebRTC data channel + signaling) with a shared room code so a phone can control a laptop.
 
+## Deploy to Cloudflare Workers
+
+The app is a **static export** (fully client-side / localStorage), served as Workers static assets.
+
+```bash
+# One-time: authenticate
+npx wrangler login
+
+# Build + deploy
+npm run deploy
+```
+
+Preview in the Workers runtime locally:
+
+```bash
+npm run preview
+```
+
+Worker name / config: `wrangler.jsonc` → `teleprompter`. After deploy, Wrangler prints the `*.workers.dev` URL.
+
+> `@opennextjs/cloudflare` requires Next.js 15.5+. This project stays on Next 14 with `output: "export"`, which fits a local-first UI with no server APIs.
+
 ## Deploy to Vercel
 
 1. Push this project to GitHub / GitLab / Bitbucket.
