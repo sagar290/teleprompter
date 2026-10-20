@@ -1,72 +1,46 @@
 # Teleprompter
 
-A local-first web teleprompter built with **Next.js (App Router)**, **React**, **TypeScript**, and **Tailwind CSS**. Script and settings persist in `localStorage` — no backend required.
+A local-first web teleprompter for news anchors, presenters, and creators. Write your script, tune scroll and guide settings, then go full-screen — everything stays in the browser (`localStorage`), with no backend required.
+
+**Live:** [teleprompter.sagardash.me](https://teleprompter.sagardash.me/) · [teleprompter.subarna.me](https://teleprompter.subarna.me/)
+
+Built with **Next.js (App Router)**, **React**, **TypeScript**, and **Tailwind CSS**.  
+Brand: [subarna.me](https://subarna.me) · Developed by [Sagar Dash](https://sagardash.me)
+
+## Screenshots
+
+### Editor
+
+Script editor with Bangla news presets, pause tools, and settings.
+
+![Editor](docs/screenshots/editor.png)
+
+### Prompter
+
+Full-screen scrolling view with reading guide and floating controls.
+
+![Prompter](docs/screenshots/prompter.png)
+
+### Remote
+
+Same-browser phone remote via BroadcastChannel.
+
+![Remote](docs/screenshots/remote.png)
 
 ## Features
 
 - Smooth `requestAnimationFrame` auto-scroll with live speed changes
 - Play / pause / reset, fullscreen, mirror (horizontal + vertical)
-- Font size, line height, side margins, text/background colors
-- Reading guide, 3-2-1 countdown, progress + time remaining
-- Pause markup: `---` and `[pause 3s]`
+- Font size, line height, side margins, text / background / guide colors
+- Adjustable reading guide (drag or sliders)
+- 3-2-1 countdown, progress bar, and time remaining
+- Pause markup: `---` and `[pause Ns]` (plus insert buttons)
+- Bangla news presets and saved scripts
 - Keyboard shortcuts on the prompter page
 - Optional voice-follow (Web Speech API / Chrome)
-- Multiple saved scripts
-- Same-browser remote control via BroadcastChannel (`/remote`)
+- Same-browser remote control (`/remote`)
 
-## File tree
-
-```text
-teleprompter/
-├── app/
-│   ├── globals.css
-│   ├── layout.tsx
-│   ├── page.tsx                 # Editor (/)
-│   ├── prompter/page.tsx        # Full-screen prompter
-│   └── remote/page.tsx          # Phone remote (BroadcastChannel)
-├── components/
-│   ├── Button.tsx
-│   ├── Slider.tsx
-│   ├── Toggle.tsx
-│   ├── ColorPicker.tsx
-│   ├── ScriptEditor.tsx
-│   ├── SettingsPanel.tsx
-│   ├── ScriptLibrary.tsx
-│   ├── PrompterView.tsx
-│   ├── ControlsBar.tsx
-│   ├── ProgressBar.tsx
-│   ├── CountdownOverlay.tsx
-│   └── ReadingGuide.tsx
-├── hooks/
-│   ├── useAutoScroll.ts
-│   ├── useLocalStorage.ts
-│   ├── useKeyboardShortcuts.ts
-│   ├── useFullscreen.ts
-│   ├── useIdle.ts
-│   ├── useVoiceFollow.ts
-│   └── useRemoteControl.ts
-├── lib/
-│   ├── defaults.ts
-│   ├── script.ts
-│   └── cn.ts
-├── types/
-│   └── index.ts
-├── package.json
-├── tailwind.config.ts
-├── tsconfig.json
-└── next.config.mjs
-```
-
-## Setup
-
-If starting from scratch:
-
-```bash
-npx create-next-app@14 teleprompter --typescript --tailwind --eslint --app --no-src-dir --import-alias "@/*" --use-npm
-cd teleprompter
-```
-
-This repo is already scaffolded. Install and run:
+## Quick start
 
 ```bash
 npm install
@@ -75,9 +49,11 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-- Editor: `/`
-- Prompter: `/prompter`
-- Remote (same browser): `/remote`
+| Route | Purpose |
+| --- | --- |
+| `/` | Script editor + settings |
+| `/prompter` | Full-screen prompter |
+| `/remote` | Phone remote (same browser) |
 
 ## Keyboard shortcuts (prompter)
 
@@ -91,49 +67,30 @@ Open [http://localhost:3000](http://localhost:3000).
 | R | Reset |
 | Esc | Exit to editor |
 
-## Remote control approach
+## Deploy (Cloudflare Workers)
 
-- **BroadcastChannel** (implemented): open `/prompter` and `/remote` in tabs on the same origin/browser. Instant, no server.
-- **Cross-device**: use a small WebSocket relay (or WebRTC data channel + signaling) with a shared room code so a phone can control a laptop.
-
-## Deploy to Cloudflare Workers
-
-The app is a **static export** (fully client-side / localStorage), served as Workers static assets.
+Static export → Workers assets.
 
 ```bash
-# Put your Cloudflare API token in `.env` as CLOUDFLARE_API_TOKEN
-# (or run: npx wrangler login)
-
-# Build + deploy (includes custom domain teleprompter.subarna.me)
+# Token in `.env` as CLOUDFLARE_API_TOKEN
 npm run deploy
 ```
 
-Custom domain is configured in `wrangler.jsonc` → `teleprompter.subarna.me`.  
-`subarna.me` must already be on the same Cloudflare account.
+Custom domains (see `wrangler.jsonc`):
 
-Preview in the Workers runtime locally:
+- `teleprompter.sagardash.me`
+- `teleprompter.subarna.me`
 
-```bash
-npm run preview
-```
-
-Worker name / config: `wrangler.jsonc` → `teleprompter`. After deploy, Wrangler prints the `*.workers.dev` URL.
-
-> `@opennextjs/cloudflare` requires Next.js 15.5+. This project stays on Next 14 with `output: "export"`, which fits a local-first UI with no server APIs.
-
-## Deploy to Vercel
-
-1. Push this project to GitHub / GitLab / Bitbucket.
-2. Import the repo at [vercel.com/new](https://vercel.com/new).
-3. Framework preset: **Next.js** (defaults are fine).
-4. Click **Deploy**.
-
-Or from the CLI:
+If a custom domain returns **522**, run:
 
 ```bash
-npm i -g vercel
-vercel
+npm run fix:domain
 ```
+
+## Remote control notes
+
+- **BroadcastChannel** (built-in): `/prompter` + `/remote` on the same origin/browser
+- **Cross-device:** use WebSocket or WebRTC with a shared room code (not implemented)
 
 ## License
 
